@@ -1,50 +1,24 @@
 # -*- coding:utf-8 -*-
-import sys,pygame
-from ship2 import Ship2
+import pygame
+from setting2 import Settings_test
+from ship2 import Ship_Test
+import game_function2 as gt
 from pygame.sprite import Group
-from setting import Settings
-import game_function as gf
-def run_blue():
+def run_game():
     pygame.init()
-    screen = pygame.display.set_mode((500,500))
-    pygame.display.set_caption("Alien Invasion")
-    # ai_settings = Settings()
-    ship = Ship2(screen)
+    setscreen = Settings_test()
+    screen = pygame.display.set_mode((setscreen.screen_width,setscreen.screen_height))
+    pygame.display.set_caption('Blues Screen')
 
-    bg_color = (255,255,255)
+    #新建飞船
+    xing = Ship_Test(setscreen,screen)
 
+    #存放子弹的编组
     bullets = Group()
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    ship.moving_right = True
-                elif event.key == pygame.K_LEFT:
-                    ship.moving_left = True
-                elif event.key == pygame.K_DOWN:
-                    ship.moving_down = True
-                elif event.key == pygame.K_UP:
-                    ship.moving_up = True
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_RIGHT:
-                    ship.moving_right = False
-                elif event.key == pygame.K_LEFT:
-                    ship.moving_left = False
-                elif event.key == pygame.K_UP:
-                    ship.moving_up = False
-                elif event.key == pygame.K_DOWN:
-                    ship.moving_down = False
-        screen.fill(bg_color)
-        ship.update()
-        ship.blitme()  # 绘制飞船
-        bullets.update()
+        gt.check_events(setscreen,screen,xing,bullets)
+        xing.update()
+        gt.update_bullets(setscreen,bullets)
+        gt.update_screen(setscreen,screen,xing,bullets)
+run_game()
 
-        # 让最新绘制的屏幕可见
-        pygame.display.flip()
-
-
-
-
-run_blue()

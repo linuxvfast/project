@@ -1,30 +1,32 @@
 # -*- coding:utf-8 -*-
 import pygame
-class Ship2():
-    def __init__(self,screen):
+class Ship_Test():
+    def __init__(self,setscreen,screen):
+        '''加载图片并获取属性信息'''
         self.screen = screen
-        self.image = pygame.image.load('images/ship.bmp') #导入图片
+        self.image = pygame.image.load('images/test.bmp')
         self.rect = self.image.get_rect()
-        self.screen_rect = screen.get_rect()
+        self.screen_rect = self.screen.get_rect()
 
-        # self.rect.center = self.screen_rect.center   #固定图片在屏幕的中间
-        self.rect.center = self.screen_rect.center
+        #火箭放置屏幕最左边y轴中间
+        self.rect.centery = self.screen_rect.centery
         self.rect.left = self.screen_rect.left
 
-        self.moving_right = False
-        self.moving_left = False
-        self.moving_up = False
+        #上下方向的移动标志
         self.moving_down = False
+        self.moving_up = False
+
+        self.setscreen = setscreen
+        self.center = float(self.rect.centery)
     def update(self):
-        if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.rect.centerx += 1
-        elif self.moving_left and self.rect.left > 0:
-            self.rect.centerx -= 1
-        elif self.moving_down and self.rect.bottom < self.screen_rect.bottom:
-            self.rect.centery += 1
+        '''更新上下移动的位置'''
+        if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
+            self.center += self.setscreen.ship_speed_factor
         elif self.moving_up and self.rect.top > self.screen_rect.top:
-            self.rect.centery -= 1
+            self.center -= self.setscreen.ship_speed_factor
+
+        self.rect.centery = self.center
 
     def blitme(self):
-        self.screen.blit(self.image,self.rect) #画图
-
+        '''屏幕显示'''
+        self.screen.blit(self.image,self.rect)
