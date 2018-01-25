@@ -12,4 +12,8 @@ for person_data in datas:
     if person_data['Year'] == 1990:
         country_name = person_data['Country Name']
         population = int(float(person_data['Value']))
-        print(country_name + ":" + str(population))
+        code = get_country_code(country_name)
+        if code:
+            print(code + ":" + str(population))
+        else:
+            print('Error - ' + country_name)
