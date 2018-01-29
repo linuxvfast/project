@@ -1,0 +1,43 @@
+# -*- coding:utf-8 -*-
+import pygal.maps.world as pmw
+import json,pygal
+from country_codes import get_country_code
+from pygal.style import RotateStyle,LightColorizedStyle
+
+#绘制完整的世界人口数量地图
+#将数据加载到列表
+filename = 'population_json.json'
+with open(filename) as f:
+    datas = json.load(f)
+
+#创建包含人口数量的字典
+count_populations = {}
+for pop_dict in datas:
+    if pop_dict['Year'] == 1990:
+        country = pop_dict['Country Name']
+        population = int(float(pop_dict['Value']))
+        code = get_country_code(country)
+        if code:
+            count_populations[code] = population
+
+#根据人口数量分组
+pops_1,pops_2,pops_3 = {},{},{}
+for cc,pop in count_populations.items():
+    if pop <100000000:
+        pops_1[cc] = pop
+    elif pop < 1000000000:
+        pops_2[cc] = pop
+    else:
+        pops_3[cc] = pop
+
+#显示三个分组中的国家数量
+# print(len(pops_1),len(pops_2),len(pops_3))
+
+#base_style=LightColorizedStyle高亮显示，方便打印时显示
+wm_style = RotateStyle('#336699',base_style=LightColorizedStyle)
+wm = pmw.World(style=wm_style)
+wm.title = 'World Population in 1990,by Country'
+wm.add('0-10m',pops_1)
+wm.add('10m-1bn',pops_2)
+wm.add('>1bn',pops_3)
+wm.render_to_file('populations.svg')
