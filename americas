@@ -10,3 +10,11 @@ wm.add('Central America',['bz','cr','gt','hn','ni','pa','sv'])
 wm.add('South America',['ar','bo','br','cl','co','ec','gf','gy','pe','py','sr','uy','ve'])
 
 wm.render_to_file('americas.svg')
+
+
+
+#北美洲地图显示对应的人口数据
+wm = pmw.World()
+wm.title = 'Populations of Countries in North America'
+wm.add('North America',{'ca':27791000,'us':249623000,'mx':85357874})
+wm.render_to_file('North_populations.svg')
