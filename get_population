@@ -1,0 +1,19 @@
+# -*- coding:utf-8 -*-
+import json
+from country_codes import get_country_code
+
+filename = 'population_json.json'
+with open(filename) as f:
+    datas = json.load(f)      #将数据转换为python可以处理的数据
+
+#打印1990年每个国家的人口数量
+for person_num in datas:
+    if person_num['Year'] == 1990:
+        country_name = person_num['Country Name']
+        populations = int(float(person_num['Value']))
+        code = get_country_code(country_name)
+        if code:
+            print(code + ":" + str(populations))
+        else:
+            print('Error - ' + country_name)
+
