@@ -1,0 +1,12 @@
+# -*- coding:utf-8 -*-
+from pygal_maps_world.i18n import COUNTRIES
+
+def get_country_code(country_name):
+    '''根据指定的国家名称获取国别码'''
+    for code,name in COUNTRIES.items():
+        if name == country_name:
+            return code
+    #没有指定的国家返回None
+    return None
+
+
