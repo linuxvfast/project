@@ -1,0 +1,59 @@
+__author__ = 'linux vfast'
+
+import re
+
+# v = '1 - 2 * ( (60-30 +(-40/5) * (9-2*5/3 + 7 /3*99/4*2998 +10 * 568/14 )) - (-4*3)/ (16-3*2) )'.replace(' ','')
+
+
+def product(v):
+    #乘法计算
+    r = re.compile(r'[\d\.]+[\*/]-?[\d\.]+')
+    while re.search(r'[*/]', v):
+        v1 = re.search(r,v).group()
+        li = re.findall(r'(-?[\d\.]+|\*|/)', v1)
+        if li[1] == '*':
+            result = str(float(li[0]) * float(li[2]))
+        else:
+            result = str(float(li[0]) / float(li[2]))
+        v = v.replace(v1, result)
+    return v
+def add_subtract(v):
+    #加减计算
+    li = re.findall(r'([\d\.]+|\+|-)', v)
+    sum = 0
+    for i in range(len(li) - 1):  # 处理有两个--号连续的情况
+        if li[i] == '-' and li[i + 1] == '-':
+            li[i] = '+'
+            li[i + 1] = '+'
+    for i in range(len(li)):
+        if li[i] == '-':
+            li[i] = '+'
+            li[i + 1] = float(li[i + 1]) * -1
+    for i in li:
+        if i == '+':
+            i = 0
+        sum = sum + float(i)
+    return str(sum)
+
+
+
+def simple(v):
+    return add_subtract(product(v))
+
+def run_page():
+    #主程序
+    v = input('请输入数学运算表达式如2*(-4*3)/(16-3*2)):')
+    while '(' in v:
+        r = re.compile(r'\([^()]*\)')   #匹配（)带括号的表达式
+        v1 = re.search(r, v).group()
+        result = simple(v1.strip('()'))
+        v = v.replace(v1, result)
+    return simple(v)
+
+
+print(run_page())
+
+# print('计算机--结果:',eval())
+
+
+
